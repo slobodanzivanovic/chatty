@@ -25,18 +25,20 @@ public class UserThread extends Thread {
                 OutputStream output = socket.getOutputStream()) {
             writer = new PrintWriter(output, true);
 
-            printUsers();
-
             String userName = reader.readLine();
             server.addUserName(userName);
+
+            // if (server.hasUsers()) {
+            // printUsers();
+            // }
+
+            server.broadcastUsersList();
 
             String serverMessage = "New user: " + userName + " joined the chatty server!";
             server.broadcast(serverMessage, this);
 
-            String clientMessage;
-
-            while ((clientMessage = reader.readLine()) != null && !clientMessage.equals("quit")) {
-                serverMessage = "[" + userName + "]: " + clientMessage;
+            while ((serverMessage = reader.readLine()) != null && !serverMessage.equals("quit")) {
+                serverMessage = "[" + userName + "]: " + serverMessage;
                 server.broadcast(serverMessage, this);
             }
 
@@ -58,5 +60,13 @@ public class UserThread extends Thread {
 
     void sendMessage(String message) {
         writer.println(message);
+    }
+
+    public void closeConnection() {
+        try {
+            socket.close();
+        } catch (IOException e) {
+            System.out.println("Error closing connection: " + e.getMessage());
+        }
     }
 }

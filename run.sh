@@ -1,13 +1,13 @@
 #!/bin/bash
 
 start_server() {
-  javac -cp ./bin -d ./bin src/main/java/com/slobodan/server/*.java
-  java -cp ./bin com.slobodan.server.ChattyServer 8989
+  javac -cp "./bin:$(mvn dependency:build-classpath | grep -v '^\[')" -d ./bin src/main/java/com/slobodan/server/*.java
+  java -cp "./bin:$(mvn dependency:build-classpath | grep -v '^\[')" com.slobodan.server.ChattyServer
 }
 
 start_client() {
-  javac -cp ./bin -d ./bin src/main/java/com/slobodan/client/*.java
-  java -cp ./bin com.slobodan.client.ChattyClient localhost 8989
+  javac -cp "./bin:$(mvn dependency:build-classpath | grep -v '^\[')" -d ./bin src/main/java/com/slobodan/client/*.java
+  java -cp "./bin:$(mvn dependency:build-classpath | grep -v '^\[')" com.slobodan.client.ChattyClient
 }
 
 if [ "$1" == "server" ]; then

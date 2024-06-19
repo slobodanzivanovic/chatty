@@ -9,7 +9,7 @@ import java.net.Socket;
 public class WriteThread extends Thread {
     private final Socket socket;
     private final ChattyClient client;
-    private PrintWriter writer;
+    private final PrintWriter writer;
 
     public WriteThread(Socket socket, ChattyClient client) {
         this.socket = socket;
@@ -20,21 +20,20 @@ public class WriteThread extends Thread {
             writer = new PrintWriter(output, true);
         } catch (IOException exception) {
             System.out.println("Error writing to socket: " + exception.getMessage());
+            throw new RuntimeException("Error initializing WriteThread", exception);
         }
     }
 
     public void run() {
         Console console = System.console();
 
-        String userName = console.readLine("\nPlease enter your username: ");
-        client.setUserName(userName);
-        writer.println(userName);
-
         String text;
 
         do {
-            text = console.readLine("[" + userName + "]: ");
-            writer.println(text);
+            text = console.readLine("[" + client.getUserName() + "]: ");
+            if (!text.isBlank()) {
+                writer.println(text);
+            }
         } while (!text.equals("quit"));
 
         try {

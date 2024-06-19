@@ -28,10 +28,20 @@ public class ReadThread extends Thread {
         while (true) {
             try {
                 String response = reader.readLine();
-                System.out.println("\n" + response);
-
-                if (client.getUserName() != null) {
-                    System.out.println("[" + client.getUserName() + "]: ");
+                if (response != null) {
+                    if (response.equals("@shutdown")) {
+                        System.out.println("Server has shut down. Closing connection.");
+                        break;
+                    }
+                    if (response.startsWith("Connected users: ")) {
+                        String usersList = response.substring("Connected users: ".length());
+                        System.out.println("Connected users: " + usersList.replaceAll("\\[|\\]", ""));
+                    } else {
+                        System.out.print(response);
+                        if (client.getUserName() != null) {
+                            System.out.print("\n[" + client.getUserName() + "]: " + "\n");
+                        }
+                    }
                 }
             } catch (IOException exception) {
                 System.out.println("Disconnected: " + exception.getMessage());
