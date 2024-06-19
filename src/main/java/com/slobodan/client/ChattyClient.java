@@ -24,46 +24,47 @@ public class ChattyClient {
 
         Database database = new Database("jdbc:postgresql://localhost:5432/chatty", "slobodan", "1234");
 
-        String choice = console.readLine("Enter 'register' to register or 'login' to login: ");
-        if ("register".equalsIgnoreCase(choice)) {
-            String username = console.readLine("Enter username: ");
-            String password = console.readLine("Enter password: ");
-            boolean success = database.registerUser(username, password);
-            if (success) {
-                System.out.println("Registration successful. You can now log in.");
-            } else {
-                System.out.println("Registration failed. Please try again.");
-            }
-        } else if ("login".equalsIgnoreCase(choice)) {
-            String username = console.readLine("Enter username: ");
-            String password = console.readLine("Enter password: ");
-            boolean success = database.loginUser(username, password);
-            if (success) {
-                System.out.println("Login successful. Connecting to server...");
-                this.userName = username;
-
-                try {
-                    socket = new Socket(hostname, port);
-                    System.out.println("Connected to " + hostname + ":" + port);
-
-                    PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
-                    writer.println(username);
-
-                    new ReadThread(socket, this).start();
-                    new WriteThread(socket, this).start();
-
-                } catch (UnknownHostException exception) {
-                    System.out.println(
-                            "Wrong server host: " + hostname + " or port: " + port + "\n" + exception.getMessage());
-                } catch (IOException exception) {
-                    System.out.println("I/O Error: " + exception.getMessage());
+        while (true) {
+            String choice = console.readLine("Enter 'register' to register or 'login' to login: ");
+            if ("register".equalsIgnoreCase(choice)) {
+                String username = console.readLine("Enter username: ");
+                String password = console.readLine("Enter password: ");
+                boolean success = database.registerUser(username, password);
+                if (success) {
+                    System.out.println("Registration successful. You can now log in.");
+                    continue;
+                } else {
+                    System.out.println("Registration failed. Please try again.");
                 }
+            } else if ("login".equalsIgnoreCase(choice)) {
+                String username = console.readLine("Enter username: ");
+                String password = console.readLine("Enter password: ");
+                boolean success = database.loginUser(username, password);
+                if (success) {
+                    System.out.println("Login successful. Connecting to server...");
+                    this.userName = username;
 
-            } else {
-                System.out.println("Login failed. Please check your credentials and try again.");
+                    try {
+                        socket = new Socket(hostname, port);
+                        System.out.println("Connected to " + hostname + ":" + port);
+
+                        PrintWriter writer = new PrintWriter(socket.getOutputStream(), true);
+                        writer.println(username);
+
+                        new ReadThread(socket, this).start();
+                        new WriteThread(socket, this).start();
+
+                    } catch (UnknownHostException exception) {
+                        System.out.println(
+                                "Wrong server host: " + hostname + " or port: " + port + "\n" + exception.getMessage());
+                    } catch (IOException exception) {
+                        System.out.println("I/O Error: " + exception.getMessage());
+                    }
+                    break;
+                } else {
+                    System.out.println("Invalid choice. Please enter 'register' or 'login'.");
+                }
             }
-        } else {
-            System.out.println("Invalid choice. Exiting.");
         }
     }
 
