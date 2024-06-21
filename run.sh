@@ -6,7 +6,7 @@ start_server() {
 }
 
 start_client() {
-  javac -cp "./bin:$(mvn dependency:build-classpath | grep -v '^\[')" -d ./bin src/main/java/com/slobodan/client/*.java
+  javac -cp "./bin:$(mvn dependency:build-classpath | grep -v '^\[')" -d ./bin src/main/java/com/blitzhetz/client/*.java src/main/java/com/blitzhetz/db/*.java
   java -cp "./bin:$(mvn dependency:build-classpath | grep -v '^\[')" com.slobodan.client.ChattyClient
 }
 

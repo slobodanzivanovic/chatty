@@ -6,7 +6,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import com.slobodan.server.Database;
+import com.slobodan.db.Database;
 
 public class ChattyClient {
     private final String hostname;

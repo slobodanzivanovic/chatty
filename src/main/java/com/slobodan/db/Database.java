@@ -1,4 +1,4 @@
-package com.slobodan.server;
+package com.slobodan.db;
 
 import org.mindrot.jbcrypt.BCrypt;
 
