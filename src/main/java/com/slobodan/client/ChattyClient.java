@@ -58,7 +58,8 @@ public class ChattyClient {
             String choice = console.readLine("Enter 'register' to register or 'login' to login: ");
             if ("register".equalsIgnoreCase(choice)) {
                 String username = console.readLine("Enter username: ");
-                String password = console.readLine("Enter password: ");
+                char[] passwordArray = console.readPassword("Enter password: ");
+                String password = new String(passwordArray);
                 boolean success = database.registerUser(username, password);
                 if (success) {
                     System.out.println("Registration successful. You can now log in.");
@@ -68,7 +69,8 @@ public class ChattyClient {
                 }
             } else if ("login".equalsIgnoreCase(choice)) {
                 String username = console.readLine("Enter username: ");
-                String password = console.readLine("Enter password: ");
+                char[] passwordArray = console.readPassword("Enter password: ");
+                String password = new String(passwordArray);
                 boolean success = database.loginUser(username, password);
                 if (success) {
                     System.out.println("Login successful. Connecting to server...");
