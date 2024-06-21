@@ -19,7 +19,23 @@ public class ChattyClient {
         this.port = port;
     }
 
+    private void displayLogo() {
+        System.out.println();
+        System.out.println("   _____ _           _   _             ________   ");
+        System.out.println("  / ____| |         | | | |           /  ____  \\  ");
+        System.out.println(" | |    | |__   __ _| |_| |_ _   _   /  / ___|  \\ ");
+        System.out.println(" | |    | '_ \\ / _` | __| __| | | | |  | |       |");
+        System.out.println(" | |____| | | | (_| | |_| |_| |_| | |  | |___    |");
+        System.out.println("  \\_____|_| |_|\\__,_|\\__|\\__|\\__, |  \\  \\____|  / ");
+        System.out.println("                              __/ |   \\________/  ");
+        System.out.println("                             |___/                ");
+        System.out.println();
+        System.out.println();
+    }
+
     public void registerOrLogin() {
+        displayLogo();
+
         Console console = System.console();
 
         Database database = new Database("jdbc:postgresql://localhost:5432/chatty", "slobodan", "1234");
